@@ -14,7 +14,7 @@ test("disables the select with a loading placeholder while loading", async ({
 
 test("shows the current label", async ({ mount }) => {
   const component = await mount(
-    <WrappedPopupDefaultLabel status="loaded" label="question" error={null} />,
+    <WrappedPopupDefaultLabel status="loaded" label="question" />,
   );
 
   const select = component.getByTestId("default-label-select");
@@ -26,7 +26,7 @@ test("shows the current label", async ({ mount }) => {
 
 test("calls onChange with the selected label", async ({ mount }) => {
   const component = await mount(
-    <WrappedPopupDefaultLabel status="loaded" label="praise" error={null} />,
+    <WrappedPopupDefaultLabel status="loaded" label="praise" />,
   );
 
   await component.getByTestId("default-label-select").selectOption("todo");
@@ -37,7 +37,7 @@ test("calls onChange with the selected label", async ({ mount }) => {
 test("keeps the select usable when saving failed", async ({ mount }) => {
   const component = await mount(
     <WrappedPopupDefaultLabel
-      status="loaded"
+      status="saveError"
       label="praise"
       error="Something went wrong"
     />,

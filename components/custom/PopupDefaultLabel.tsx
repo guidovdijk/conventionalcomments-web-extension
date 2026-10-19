@@ -5,7 +5,8 @@ import { XCircleIcon } from "lucide-react";
 export type DefaultLabelState =
   | { status: "loading" }
   | { status: "error"; error: string }
-  | { status: "loaded"; label: string; error: string | null };
+  | { status: "loaded"; label: string }
+  | { status: "saveError"; label: string; error: string };
 
 function ErrorAlert({ message }: { message: string }): ReactElement {
   return (
@@ -41,8 +42,9 @@ export default function PopupDefaultLabel({
     },
     [onChange],
   );
-  const { status } = defaultLabelState;
-  const error = status === "loading" ? null : defaultLabelState.error;
+  const isLoading = defaultLabelState.status === "loading";
+  const label = "label" in defaultLabelState ? defaultLabelState.label : "";
+  const error = "error" in defaultLabelState ? defaultLabelState.error : null;
 
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-sm m-4">
@@ -63,19 +65,17 @@ export default function PopupDefaultLabel({
           data-testid="default-label-select"
           aria-describedby="default-label-description default-label-error"
           className="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-2 focus:outline-indigo-600 disabled:opacity-50"
-          value={status === "loaded" ? defaultLabelState.label : ""}
-          disabled={status === "loading"}
+          value={label}
+          disabled={isLoading}
           onChange={onSelectChange}
         >
-          {status !== "loaded" && (
-            <option value="" disabled>
-              {status === "loading" ? "Loading…" : "Choose a label"}
-            </option>
-          )}
-          {status !== "loading" &&
-            labels.map((label) => (
-              <option key={label} value={label}>
-                {label}
+          <option value="" disabled hidden>
+            {isLoading ? "Loading…" : "Choose a label"}
+          </option>
+          {!isLoading &&
+            labels.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
         </select>
