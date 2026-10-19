@@ -13,9 +13,7 @@ export default function useDefaultLabel(): [
 
   useEffect(() => {
     sendMessage("getDefaultLabel")
-      .then((label) =>
-        setDefaultLabelState({ status: "loaded", label, error: null }),
-      )
+      .then((label) => setDefaultLabelState({ status: "loaded", label }))
       .catch(() =>
         setDefaultLabelState({
           status: "error",
@@ -31,15 +29,17 @@ export default function useDefaultLabel(): [
         defaultLabelState.status !== "loading",
         "The default label cannot change while loading",
       );
-      setDefaultLabelState({ status: "loaded", label, error: null });
+      setDefaultLabelState({ status: "loaded", label });
       try {
         await sendMessage("setDefaultLabel", label);
       } catch {
-        setDefaultLabelState({
-          ...defaultLabelState,
-          error:
-            "Something went wrong when saving the default label. Please, report a bug if the problem persists.",
-        });
+        const error =
+          "Something went wrong when saving the default label. Please, report a bug if the problem persists.";
+        setDefaultLabelState(
+          defaultLabelState.status === "error"
+            ? { status: "error", error }
+            : { status: "saveError", label: defaultLabelState.label, error },
+        );
       }
     },
     [defaultLabelState],

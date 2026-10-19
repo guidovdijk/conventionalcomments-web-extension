@@ -71,7 +71,6 @@ it("loads the stored label", async () => {
   expect(result[0]).toEqual({
     status: "loaded",
     label: "praise",
-    error: null,
   });
 });
 
@@ -94,7 +93,6 @@ it("saves the new label", async () => {
   expect(result[0]).toEqual({
     status: "loaded",
     label: "question",
-    error: null,
   });
   expect(await getDefaultLabel()).toBe("question");
 });
@@ -106,7 +104,7 @@ it("restores the previous label with an error when saving fails", async () => {
   await act(() => result[1]("question"));
 
   expect(result[0]).toEqual({
-    status: "loaded",
+    status: "saveError",
     label: "praise",
     error: expect.stringContaining("saving the default label"),
   });
@@ -121,7 +119,6 @@ it("recovers from a load error by saving a new label", async () => {
   expect(result[0]).toEqual({
     status: "loaded",
     label: "question",
-    error: null,
   });
   expect(await getDefaultLabel()).toBe("question");
 });
