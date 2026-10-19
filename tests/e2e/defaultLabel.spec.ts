@@ -12,7 +12,7 @@ test("Uses the default label chosen in the popup without reloading the page", as
 
   const popup = await context.newPage();
   await popup.goto(`chrome-extension://${extensionId}/popup.html`);
-  const select = popup.getByLabel("Default label");
+  const select = popup.getByTestId("default-label-select");
   await expect(select).toBeEnabled();
   await select.selectOption("question");
   await expect(select).toBeEnabled();
