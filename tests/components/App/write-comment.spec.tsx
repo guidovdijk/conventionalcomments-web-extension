@@ -50,6 +50,35 @@ test("add one decorator", async ({ mount, page, helpers }) => {
     .toHaveSelectedText({ start: 33, end: 35 });
 });
 
+test("add one decorator with another default label", async ({
+  mount,
+  page,
+  helpers,
+}) => {
+  const component = await mount(
+    <WrappedApp isMainComment defaultTextareaValue="" defaultLabel="todo" />,
+  );
+  await component.getByTestId("textarea").click();
+  await page.keyboard.type("hello world");
+  await helpers.setSelectionRange(component, 16, 18);
+  component
+    .getByTestId("decorations-combobox")
+    .getByTestId("combobox-toggle")
+    .click();
+  await component
+    .getByTestId("combobox-item")
+    .and(component.locator('[data-testvalue="non-blocking"]'))
+    .click();
+
+  await expect
+    .soft(component.getByTestId("textarea"))
+    .toHaveValue("**todo (non-blocking):** hello world");
+  await expect.soft(component.getByTestId("textarea")).toBeFocused();
+  await expect
+    .soft(component.getByTestId("textarea"))
+    .toHaveSelectedText({ start: 31, end: 33 });
+});
+
 test("add two decorators", async ({ mount, page, helpers }) => {
   const component = await mount(
     <WrappedApp isMainComment defaultTextareaValue="" defaultLabel="praise" />,
