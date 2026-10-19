@@ -1,17 +1,19 @@
 import type { ChangeEvent, ReactElement } from "react";
 import { useCallback } from "react";
 import { XCircleIcon } from "lucide-react";
-import { LABELS, type Label } from "~/entrypoints/content/constants";
 
-export type DefaultLabelState = {
-  label: Label;
-  status: "loading" | "loaded";
-  error: string | null;
-};
+export type DefaultLabelState =
+  | { status: "loading" }
+  | { status: "error"; error: string }
+  | { status: "loaded"; label: string; error: string | null };
 
 function ErrorAlert({ message }: { message: string }): ReactElement {
   return (
-    <div className="rounded-md bg-red-50 p-4 mt-3">
+    <div
+      id="default-label-error"
+      data-testid="default-label-error"
+      className="rounded-md bg-red-50 p-4 mt-3"
+    >
       <div className="flex">
         <div className="shrink-0">
           <XCircleIcon aria-hidden="true" className="size-5 text-red-400" />
@@ -23,20 +25,24 @@ function ErrorAlert({ message }: { message: string }): ReactElement {
 }
 
 interface PopupDefaultLabelProps {
+  labels: readonly string[];
   defaultLabelState: DefaultLabelState;
-  onChange: (label: Label) => void;
+  onChange: (label: string) => void;
 }
 
 export default function PopupDefaultLabel({
+  labels,
   defaultLabelState,
   onChange,
 }: PopupDefaultLabelProps): ReactElement {
   const onSelectChange = useCallback(
     (event: ChangeEvent<HTMLSelectElement>): void => {
-      onChange(event.target.value as Label);
+      onChange(event.target.value);
     },
     [onChange],
   );
+  const { status } = defaultLabelState;
+  const error = status === "loading" ? null : defaultLabelState.error;
 
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-sm m-4">
@@ -44,27 +50,36 @@ export default function PopupDefaultLabel({
         <h3 className="text-base font-semibold text-gray-900">
           <label htmlFor="default-label">Default label</label>
         </h3>
-        <p className="mt-1 text-sm text-gray-500">
+        <p
+          id="default-label-description"
+          className="mt-1 text-sm text-gray-500"
+        >
           Label preselected when starting a new comment.
         </p>
       </div>
       <div className="px-4 py-5">
         <select
           id="default-label"
+          data-testid="default-label-select"
+          aria-describedby="default-label-description default-label-error"
           className="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-2 focus:outline-indigo-600 disabled:opacity-50"
-          value={defaultLabelState.label}
-          disabled={defaultLabelState.status === "loading"}
+          value={status === "loaded" ? defaultLabelState.label : ""}
+          disabled={status === "loading"}
           onChange={onSelectChange}
         >
-          {LABELS.map(({ label }) => (
-            <option key={label} value={label}>
-              {label}
+          {status !== "loaded" && (
+            <option value="" disabled>
+              {status === "loading" ? "Loading…" : "Choose a label"}
             </option>
-          ))}
+          )}
+          {status !== "loading" &&
+            labels.map((label) => (
+              <option key={label} value={label}>
+                {label}
+              </option>
+            ))}
         </select>
-        {defaultLabelState.error !== null && (
-          <ErrorAlert message={defaultLabelState.error} />
-        )}
+        {error !== null && <ErrorAlert message={error} />}
       </div>
     </div>
   );
