@@ -1,10 +1,9 @@
 import { test, expect } from "../fixtures";
 import { WrappedApp } from "./App.story.tsx";
-import { DEFAULT_LABEL, type Label } from "~/entrypoints/content/constants";
 
 const testCases: {
   isMainComment: boolean;
-  defaultLabel?: Label;
+  defaultLabel: string;
   defaultTextareaValue: string;
   expectedLabel: string;
   expectedDecorations: string[];
@@ -12,10 +11,11 @@ const testCases: {
 }[] = [
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "",
-    expectedLabel: DEFAULT_LABEL,
+    expectedLabel: "praise",
     expectedDecorations: [],
-    expectedTextareaValue: `**${DEFAULT_LABEL}:** `,
+    expectedTextareaValue: "**praise:** ",
   },
   {
     isMainComment: true,
@@ -35,6 +35,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -42,6 +43,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "Random text...",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -49,6 +51,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "Random text...",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -56,6 +59,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**unkown:** existing comment",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -63,6 +67,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**unkown:** existing comment",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -70,6 +75,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (unkown):** existing comment",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -77,6 +83,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (unkown):** existing comment",
     expectedLabel: "none",
     expectedDecorations: [],
@@ -84,6 +91,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue:** existing comment",
     expectedLabel: "issue",
     expectedDecorations: [],
@@ -91,6 +99,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue:** existing comment",
     expectedLabel: "issue",
     expectedDecorations: [],
@@ -98,6 +107,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking):** existing comment",
     expectedLabel: "issue",
     expectedDecorations: ["blocking"],
@@ -105,6 +115,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking):** existing comment",
     expectedLabel: "issue",
     expectedDecorations: ["blocking"],
@@ -112,6 +123,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking, if-minor):** existing comment",
     expectedLabel: "issue",
     expectedDecorations: ["blocking", "if-minor"],
@@ -119,6 +131,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking, if-minor):** existing comment",
     expectedLabel: "issue",
     expectedDecorations: ["blocking", "if-minor"],
@@ -126,6 +139,7 @@ const testCases: {
   },
   {
     isMainComment: true,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking, if-minor):** ",
     expectedLabel: "issue",
     expectedDecorations: ["blocking", "if-minor"],
@@ -133,6 +147,7 @@ const testCases: {
   },
   {
     isMainComment: false,
+    defaultLabel: "praise",
     defaultTextareaValue: "**issue (blocking, if-minor):** ",
     expectedLabel: "issue",
     expectedDecorations: ["blocking", "if-minor"],
@@ -141,7 +156,7 @@ const testCases: {
 ];
 for (const {
   isMainComment,
-  defaultLabel = DEFAULT_LABEL,
+  defaultLabel,
   defaultTextareaValue,
   expectedLabel,
   expectedDecorations,
