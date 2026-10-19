@@ -5,10 +5,13 @@ import PopupDefaultLabel from "~/components/custom/PopupDefaultLabel";
 import PopupDomains from "~/components/custom/PopupDomains";
 import PopupIntro from "~/components/custom/PopupIntro";
 import PopupLayout from "~/components/custom/PopupLayout";
+import { LABELS } from "~/lib/constants";
 import { sendMessage } from "~/lib/messaging";
 import getDomainFromUrl from "./getDomainFromUrl";
 import useDefaultLabel from "./useDefaultLabel";
 import { useCallback } from "#imports";
+
+const LABEL_NAMES = LABELS.map(({ label }) => label);
 
 async function getRegisteredUrls(): Promise<
   { isSuccess: true; urls: string[] } | { isSuccess: false; error: string }
@@ -195,6 +198,7 @@ export default function App(): ReactElement {
     <PopupLayout>
       <PopupIntro />
       <PopupDefaultLabel
+        labels={LABEL_NAMES}
         defaultLabelState={defaultLabelState}
         onChange={onDefaultLabelChange}
       />

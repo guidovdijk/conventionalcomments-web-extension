@@ -1,48 +1,48 @@
 import { useCallback, useEffect, useState } from "react";
+import invariant from "tiny-invariant";
 import type { DefaultLabelState } from "~/components/custom/PopupDefaultLabel";
-import { DEFAULT_LABEL, type Label } from "~/entrypoints/content/constants";
-import { getDefaultLabel, setDefaultLabel } from "~/lib/defaultLabel";
+import { sendMessage } from "~/lib/messaging";
 
 export default function useDefaultLabel(): [
   DefaultLabelState,
-  (label: Label) => Promise<void>,
+  (label: string) => Promise<void>,
 ] {
   const [defaultLabelState, setDefaultLabelState] = useState<DefaultLabelState>(
-    { label: DEFAULT_LABEL, status: "loading", error: null },
+    { status: "loading" },
   );
 
   useEffect(() => {
-    getDefaultLabel()
+    sendMessage("getDefaultLabel")
       .then((label) =>
-        setDefaultLabelState({ label, status: "loaded", error: null }),
+        setDefaultLabelState({ status: "loaded", label, error: null }),
       )
       .catch(() =>
         setDefaultLabelState({
-          label: DEFAULT_LABEL,
-          status: "loaded",
+          status: "error",
           error:
             "Something went wrong when retrieving the default label. Please, report a bug if the problem persists.",
         }),
       );
   }, []);
 
-  const previousLabel = defaultLabelState.label;
   const onDefaultLabelChange = useCallback(
-    async (label: Label): Promise<void> => {
-      setDefaultLabelState({ label, status: "loading", error: null });
+    async (label: string): Promise<void> => {
+      invariant(
+        defaultLabelState.status !== "loading",
+        "The default label cannot change while loading",
+      );
+      setDefaultLabelState({ status: "loaded", label, error: null });
       try {
-        await setDefaultLabel(label);
-        setDefaultLabelState({ label, status: "loaded", error: null });
+        await sendMessage("setDefaultLabel", label);
       } catch {
         setDefaultLabelState({
-          label: previousLabel,
-          status: "loaded",
+          ...defaultLabelState,
           error:
             "Something went wrong when saving the default label. Please, report a bug if the problem persists.",
         });
       }
     },
-    [previousLabel],
+    [defaultLabelState],
   );
 
   return [defaultLabelState, onDefaultLabelChange];
