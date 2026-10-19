@@ -3,13 +3,12 @@ import { useState, useCallback, useRef } from "react";
 import invariant from "tiny-invariant";
 import { ComboboxPortalContainerContext } from "~/components/custom/Combobox";
 import App from "~/entrypoints/content/App";
-import type { Label } from "~/entrypoints/content/constants";
 import "~/entrypoints/content/global.css";
 
 interface WrappedAppProps {
   isMainComment: boolean;
   defaultTextareaValue: string;
-  defaultLabel: Label;
+  defaultLabel: string;
 }
 
 export function WrappedApp({
