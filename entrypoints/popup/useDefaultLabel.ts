@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import type { DefaultLabelState } from "~/components/custom/PopupDefaultLabel";
+import type { Label } from "~/lib/constants";
 import { sendMessage } from "~/lib/messaging";
 
 export default function useDefaultLabel(): [
   DefaultLabelState,
-  (label: string) => Promise<void>,
+  (label: Label) => Promise<void>,
 ] {
   const [defaultLabelState, setDefaultLabelState] = useState<DefaultLabelState>(
     { status: "loading" },
@@ -24,7 +25,7 @@ export default function useDefaultLabel(): [
   }, []);
 
   const onDefaultLabelChange = useCallback(
-    async (label: string): Promise<void> => {
+    async (label: Label): Promise<void> => {
       invariant(
         defaultLabelState.status !== "loading",
         "The default label cannot change while loading",

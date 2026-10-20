@@ -3,14 +3,15 @@ import { useCallback, useState } from "react";
 import PopupDefaultLabel, {
   type DefaultLabelState,
 } from "~/components/custom/PopupDefaultLabel";
+import type { Label } from "~/lib/constants";
 
-const LABELS = ["none", "praise", "question", "todo"];
+const LABELS: Label[] = ["none", "praise", "question", "todo"];
 
 export function WrappedPopupDefaultLabel(
   defaultLabelState: DefaultLabelState,
 ): ReactElement {
   const [changes, setChanges] = useState<string[]>([]);
-  const onChange = useCallback((label: string): void => {
+  const onChange = useCallback((label: Label): void => {
     setChanges((previous) => [...previous, label]);
   }, []);
 

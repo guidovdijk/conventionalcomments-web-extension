@@ -7,13 +7,14 @@ import {
   getDefaultLabel,
   setDefaultLabel,
 } from "~/entrypoints/background/defaultLabel";
+import type { Label } from "~/lib/constants";
 import useDefaultLabel from "./useDefaultLabel";
 
 vi.mock("~/entrypoints/background/defaultLabel", { spy: true });
 vi.mock("~/lib/messaging", async () => {
   const background = await import("~/entrypoints/background/defaultLabel");
   return {
-    sendMessage: (type: string, label: string) =>
+    sendMessage: (type: string, label: Label) =>
       type === "getDefaultLabel"
         ? background.getDefaultLabel()
         : background.setDefaultLabel(label),
