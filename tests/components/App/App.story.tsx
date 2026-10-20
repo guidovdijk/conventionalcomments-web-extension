@@ -4,12 +4,11 @@ import invariant from "tiny-invariant";
 import { ComboboxPortalContainerContext } from "~/components/custom/Combobox";
 import App from "~/entrypoints/content/App";
 import "~/entrypoints/content/global.css";
-import type { Label } from "~/lib/constants";
 
 interface WrappedAppProps {
   isMainComment: boolean;
   defaultTextareaValue: string;
-  defaultLabel: Label;
+  defaultLabel: string;
 }
 
 export function WrappedApp({

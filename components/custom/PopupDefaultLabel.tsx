@@ -1,13 +1,12 @@
 import type { ChangeEvent, ReactElement } from "react";
 import { useCallback } from "react";
 import { XCircleIcon } from "lucide-react";
-import type { Label } from "~/lib/constants";
 
 export type DefaultLabelState =
   | { status: "loading" }
   | { status: "error"; error: string }
-  | { status: "loaded"; label: Label }
-  | { status: "saveError"; label: Label; error: string };
+  | { status: "loaded"; label: string }
+  | { status: "saveError"; label: string; error: string };
 
 function ErrorAlert({ message }: { message: string }): ReactElement {
   return (
@@ -27,9 +26,9 @@ function ErrorAlert({ message }: { message: string }): ReactElement {
 }
 
 interface PopupDefaultLabelProps {
-  labels: readonly Label[];
+  labels: readonly string[];
   defaultLabelState: DefaultLabelState;
-  onChange: (label: Label) => void;
+  onChange: (label: string) => void;
 }
 
 export default function PopupDefaultLabel({
@@ -38,7 +37,7 @@ export default function PopupDefaultLabel({
   onChange,
 }: PopupDefaultLabelProps): ReactElement {
   const onSelectChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement & { value: Label }>): void => {
+    (event: ChangeEvent<HTMLSelectElement>): void => {
       onChange(event.target.value);
     },
     [onChange],

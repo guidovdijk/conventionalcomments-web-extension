@@ -3,14 +3,14 @@ import { useCallback, useState } from "react";
 import Editor from "./Editor";
 import { ProductType } from "./types";
 import extractComment from "./extractComment";
-import { DECORATIONS, EMPTY_LABEL, LABELS, type Label } from "~/lib/constants";
+import { DECORATIONS, EMPTY_LABEL, LABELS } from "~/lib/constants";
 import useTextareaWrapper from "./useTextareaWrapper";
 
 interface AppProps {
   productType: ProductType;
   textarea: HTMLTextAreaElement;
   isMainComment: boolean;
-  defaultLabel: Label;
+  defaultLabel: string;
 }
 
 function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>): void {

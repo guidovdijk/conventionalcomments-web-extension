@@ -3,11 +3,9 @@ interface SelectableItem {
   description: string;
 }
 
-type Label = (typeof LABELS)[number]["label"];
+const EMPTY_LABEL = "none";
 
-const EMPTY_LABEL: Label = "none";
-
-const LABELS = [
+const LABELS: Readonly<Readonly<SelectableItem>[]> = [
   {
     label: "none",
     description:
@@ -73,9 +71,9 @@ const LABELS = [
     description:
       "Quibbles are very much like **nitpick**, except it does not conjure up images of lice and animal hygiene practices.",
   },
-] as const satisfies readonly SelectableItem[];
+];
 
-const DECORATIONS = [
+const DECORATIONS: Readonly<Readonly<SelectableItem>[]> = [
   {
     label: "non-blocking",
     description:
@@ -91,7 +89,6 @@ const DECORATIONS = [
     description:
       "This decoration gives some freedom to the author that they should resolve the comment only if the changes ends up being minor or trivial.",
   },
-] as const satisfies readonly SelectableItem[];
+];
 
 export { EMPTY_LABEL, LABELS, DECORATIONS };
-export type { Label };

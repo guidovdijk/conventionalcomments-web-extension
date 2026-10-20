@@ -1,5 +1,4 @@
 import { defineExtensionMessaging } from "@webext-core/messaging";
-import type { Label } from "~/lib/constants";
 
 interface ProtocolMap {
   getRegisteredUrls(): string[];
@@ -8,9 +7,9 @@ interface ProtocolMap {
   getAnnouncements(): string[];
   markAnnoucementAsRead(announcement: string): void;
   notifyUnregister(tabId: number): void;
-  getDefaultLabel(): Label;
-  setDefaultLabel(label: Label): void;
-  notifyDefaultLabelChange(label: Label): void;
+  getDefaultLabel(): string;
+  setDefaultLabel(label: string): void;
+  notifyDefaultLabelChange(label: string): void;
 }
 
 export const { sendMessage, onMessage } =

@@ -1,10 +1,9 @@
 import { test, expect } from "../fixtures";
-import type { Label } from "~/lib/constants";
 import { WrappedApp } from "./App.story.tsx";
 
 const testCases: {
   isMainComment: boolean;
-  defaultLabel: Label;
+  defaultLabel: string;
   defaultTextareaValue: string;
   expectedLabel: string;
   expectedDecorations: string[];
